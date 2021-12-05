@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class SendT extends Thread{
 
@@ -20,17 +21,21 @@ public class SendT extends Thread{
 			
 			PrintWriter sendWriter = new PrintWriter(m_Socket.getOutputStream());
 			
+			String username;
 			String sendString;
+			
+			Scanner sc = new Scanner(System.in);
+	        System.out.printf("사용자 이름 입력: ");
+	        username = sc.next();
 			
 			while(true)
 			{
 				sendString = tmpbuf.readLine();
-
 				if(sendString.equals("exit"))
 				{
 					break;
 				}
-				
+				sendString = username + " : " + sendString;
 				sendWriter.println(sendString);
 				sendWriter.flush();
 			}

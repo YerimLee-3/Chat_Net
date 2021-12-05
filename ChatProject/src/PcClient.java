@@ -7,7 +7,7 @@ public class PcClient {
 	{
 		try {
 
-			Socket c_socket = new Socket("192.168.0.23", 8888);
+			Socket c_socket = new Socket("192.168.0.5", 8888);
 			
 			ReceiveT rec_thread = new ReceiveT();
 			rec_thread.setSocket(c_socket);

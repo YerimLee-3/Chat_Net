@@ -23,7 +23,7 @@ public class ReceiveT extends Thread{
 			{
 				receiveString = tmpbuf.readLine();
 				
-				System.out.println("»ó´ë¹æ : " + receiveString);
+				System.out.println(receiveString);
 			}
 			
 		} catch (IOException e) {
