@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,7 +18,7 @@ public class MyServer {
                 ClientManagerThread c_thread = new ClientManagerThread();
                 c_thread.setSocket(c_socket);
 
-                m_OutputList.add(new PrintWriter(c_socket.getOutputStream()));
+                m_OutputList.add(new PrintWriter(new OutputStreamWriter(c_socket.getOutputStream(), "utf-8")));
                 System.out.println(m_OutputList.size());
                 c_thread.start();
             }

@@ -7,7 +7,7 @@ public class PcClient {
 	{
 		try {
 
-			Socket c_socket = new Socket("192.168.0.5", 8888);
+			Socket c_socket = new Socket("192.168.0.23", 8888); // 192.168.0.1
 			
 			ReceiveT rec_thread = new ReceiveT();
 			rec_thread.setSocket(c_socket);
@@ -18,6 +18,7 @@ public class PcClient {
 			send_thread.start();
 			rec_thread.start();
 			
+			// System.out.println("¼º°ø");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

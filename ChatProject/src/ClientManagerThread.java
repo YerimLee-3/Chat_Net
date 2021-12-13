@@ -13,7 +13,7 @@ public class ClientManagerThread extends Thread{
     public void run(){
         super.run();
         try{
-            BufferedReader in = new BufferedReader(new InputStreamReader(m_socket.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(m_socket.getInputStream(), "utf-8"));
             String text;
 
             while(true){

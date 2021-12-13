@@ -15,7 +15,7 @@ public class ReceiveT extends Thread{
 		super.run();
 		
 		try {
-			BufferedReader tmpbuf = new BufferedReader(new InputStreamReader(m_Socket.getInputStream()));
+			BufferedReader tmpbuf = new BufferedReader(new InputStreamReader(m_Socket.getInputStream(),"utf-8"));
 			
 			String receiveString;
 			

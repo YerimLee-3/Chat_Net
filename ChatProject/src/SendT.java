@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -19,7 +20,7 @@ public class SendT extends Thread{
 		try {
 			BufferedReader tmpbuf = new BufferedReader(new InputStreamReader(System.in));
 			
-			PrintWriter sendWriter = new PrintWriter(m_Socket.getOutputStream());
+			PrintWriter sendWriter = new PrintWriter(new OutputStreamWriter(m_Socket.getOutputStream(), "utf-8"));
 			
 			String username;
 			String sendString;
@@ -28,10 +29,15 @@ public class SendT extends Thread{
 	        System.out.printf("사용자 이름 입력: ");
 	        username = sc.next();
 			
+	        System.out.println("질문지를 보내려면 'questionMode' 입력");
 			while(true)
 			{
 				sendString = tmpbuf.readLine();
 				if(sendString.equals("exit"))
+				{
+					break;
+				}
+				if(sendString.equals("questionMode"))
 				{
 					break;
 				}
@@ -50,6 +56,11 @@ public class SendT extends Thread{
 
 	}
 
+	private void sendQuestion(Socket _socket)
+	{
+		// 아직 구현 안됨
+	}
+	
 	public void setSocket(Socket _socket)
 	{
 		m_Socket = _socket;
