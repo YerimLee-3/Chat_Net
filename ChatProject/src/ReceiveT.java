@@ -16,13 +16,10 @@ public class ReceiveT extends Thread{
 		
 		try {
 			BufferedReader tmpbuf = new BufferedReader(new InputStreamReader(m_Socket.getInputStream(),"utf-8"));
-			
 			String receiveString;
-			
 			while(true)
 			{
 				receiveString = tmpbuf.readLine();
-				
 				System.out.println(receiveString);
 			}
 			
