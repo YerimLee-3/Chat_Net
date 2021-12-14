@@ -13,10 +13,16 @@ public class SendT extends Thread{
 
 	private Socket m_Socket;
 	// QuestionMode : 질문 개수 3개
-	int cnt = 3;
+	int cnt = 0;
 	// 질문, 답 string 배열
-	String[] question;
-	String[] answer;
+	public String[] question;
+	public String[] answer;
+	public String mode = "chat";
+	
+	public String username;
+	public String sendString;
+	
+	PrintWriter sendWriter;
 	
 	@Override
 	public void run() {
@@ -24,10 +30,9 @@ public class SendT extends Thread{
 		super.run();
 		try {
 			BufferedReader tmpbuf = new BufferedReader(new InputStreamReader(System.in));
-			PrintWriter sendWriter = new PrintWriter(new OutputStreamWriter(m_Socket.getOutputStream(), "utf-8"));
+			sendWriter = new PrintWriter(new OutputStreamWriter(m_Socket.getOutputStream(), "utf-8"));
 			
-			String username;
-			String sendString;
+			
 			
 			Scanner sc = new Scanner(System.in);
 	        System.out.printf("사용자 이름 입력: ");
@@ -43,35 +48,23 @@ public class SendT extends Thread{
 				}
 				if(sendString.equals("questionMode"))
 				{
-					sendQuestion(m_Socket);
-					for(int j=0; j<cnt; j++) {
-						sendString = j+1 + "번째 질문 : " + question[j];
-						sendWriter.println(sendString);
-						sendWriter.flush();
-					}
-					new Thread() {
-                        @Override
-                        public void run() {
-                            super.run();
-                            try {
-                                if(senderChat.equals(question[cnt])) { // 답과 일치하면
-                                    sendWriter.println(UserID + " : " + "질문을 맞추었습니다!");
-                                    sendWriter.flush();
-                                } else {
-                                    sendWriter.println(UserID + " : " + "질문을 틀렸습니다!");
-                                    sendWriter.flush();
-                                }
-                                sendWriter.println(UserID + " : " + "번째 질문! "+ sendmsg);
-                                sendWriter.flush();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }.start();
+					mode = "ques";
 				}
-				sendString = username + " : " + sendString;
-				sendWriter.println(sendString);
-				sendWriter.flush();
+				
+				if (mode.equals("chat")) {
+					sendString = username + " : " + sendString;
+					sendWriter.println(sendString);
+					sendWriter.flush();
+					
+				} else if (mode.equals("ques")) {
+					
+					sendQuestion(m_Socket);
+					sendString = username + " : " + "1번째 질문! " + question[0];
+					sendWriter.println(sendString);
+					sendWriter.flush();	
+					
+				} 
+				
 			}
 			sendWriter.close();
 			tmpbuf.close();
@@ -88,10 +81,10 @@ public class SendT extends Thread{
 		// 개수 입력받기
 		Scanner sc = new Scanner(System.in);
         // 배열 생성
-		question = new String[cnt];
-		answer = new String[cnt];
+		question = new String[3];
+		answer = new String[3];
 		
-		for(int i=0; i<cnt; i++) {
+		for(int i=0; i<3; i++) {
 			System.out.printf("질문할 문제를 입력해주세요 : ");
 			question[i] = sc.next();
 			System.out.printf("문제의 답을 입력해주세요 : ");
@@ -104,4 +97,26 @@ public class SendT extends Thread{
 		m_Socket = _socket;
 	}
 	
+	public void answerQuestion(String senderChat) {
+		if (cnt >= 3) {
+			mode = "chat";
+		} 
+		if(senderChat.equals(answer[cnt])) { // 답과 일치하면
+            sendWriter.println(username + " : " + "질문을 맞추었습니다!");
+            sendWriter.flush();
+        } else {
+            sendWriter.println(username + " : " + "질문을 틀렸습니다!");
+            sendWriter.flush();
+        }
+		cnt++;
+		
+		if (cnt >= 3) {
+			mode = "chat";
+		} else {
+			sendWriter.println(username + " : " + cnt+"번째 질문! "+ question[cnt]);
+	        sendWriter.flush();
+		}
+		
+        
+	}
 }

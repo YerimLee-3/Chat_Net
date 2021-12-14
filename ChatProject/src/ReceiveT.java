@@ -8,6 +8,9 @@ import java.net.SocketException;
 public class ReceiveT extends Thread{
 
 	private Socket m_Socket;
+	private SendT st;
+	private String myA;
+	private String senderName;
 	
 	@Override
 	public void run() {
@@ -21,6 +24,12 @@ public class ReceiveT extends Thread{
 			{
 				receiveString = tmpbuf.readLine();
 				System.out.println(receiveString);
+				senderName = receiveString.split(":")[0].trim();
+				
+				if((st.mode.equals("ques"))&&!(senderName.equals(st.username))) {
+					myA = receiveString.split(":")[1].trim();
+					st.answerQuestion(myA);
+				}
 			}
 			
 		} catch (IOException e) {
@@ -31,6 +40,10 @@ public class ReceiveT extends Thread{
 	public void setSocket(Socket _socket)
 	{
 		m_Socket = _socket;
+	}
+	
+	public void setSender(SendT sendt) {
+		st = sendt;
 	}
 
 }
