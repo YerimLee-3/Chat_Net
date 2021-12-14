@@ -23,6 +23,7 @@ public class SendT extends Thread{
 	public String sendString;
 	
 	PrintWriter sendWriter;
+	int flag = 0;
 	
 	@Override
 	public void run() {
@@ -32,7 +33,7 @@ public class SendT extends Thread{
 			BufferedReader tmpbuf = new BufferedReader(new InputStreamReader(System.in));
 			sendWriter = new PrintWriter(new OutputStreamWriter(m_Socket.getOutputStream(), "utf-8"));
 			
-			
+			sendWriter.flush();
 			
 			Scanner sc = new Scanner(System.in);
 	        System.out.printf("사용자 이름 입력: ");
@@ -86,9 +87,9 @@ public class SendT extends Thread{
 		
 		for(int i=0; i<3; i++) {
 			System.out.printf("질문할 문제를 입력해주세요 : ");
-			question[i] = sc.next();
+			question[i] = sc.nextLine();
 			System.out.printf("문제의 답을 입력해주세요 : ");
-			answer[i] = sc.next();
+			answer[i] = sc.nextLine();
 		}	
 	}
 	
@@ -100,21 +101,25 @@ public class SendT extends Thread{
 	public void answerQuestion(String senderChat) {
 		if (cnt >= 3) {
 			mode = "chat";
-		} 
-		if(senderChat.equals(answer[cnt])) { // 답과 일치하면
-            sendWriter.println(username + " : " + "질문을 맞추었습니다!");
-            sendWriter.flush();
-        } else {
-            sendWriter.println(username + " : " + "질문을 틀렸습니다!");
-            sendWriter.flush();
-        }
-		cnt++;
-		
-		if (cnt >= 3) {
-			mode = "chat";
+			cnt = 0;
 		} else {
-			sendWriter.println(username + " : " + cnt+"번째 질문! "+ question[cnt]);
-	        sendWriter.flush();
+			if(senderChat.equals(answer[cnt])) { // 답과 일치하면
+	            sendWriter.println(username + " : " + "답을 맞추었습니다!");
+	            sendWriter.flush();
+	        } else {
+	            sendWriter.println(username + " : " + "답을 틀렸습니다!");
+	            sendWriter.flush();
+	        }
+			cnt++;
+			
+			if (cnt >= 3) {
+				mode = "chat";
+				cnt = 0;
+			} else {
+				flag = cnt +1;
+				sendWriter.println(username + " : " + flag+"번째 질문! "+ question[cnt]);
+		        sendWriter.flush();
+			}
 		}
 		
         
