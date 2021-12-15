@@ -7,8 +7,8 @@ public class PcClient {
 	{
 		try {
 
-			Socket c_socket = new Socket("192.168.0.23", 8888); // 192.168.0.1
-			//Socket c_socket = new Socket("192.168.0.5", 8888);
+			//Socket c_socket = new Socket("192.168.0.23", 8888); // 192.168.0.1
+			Socket c_socket = new Socket("218.144.160.202", 8888);
 			
 			
 			SendT send_thread = new SendT();

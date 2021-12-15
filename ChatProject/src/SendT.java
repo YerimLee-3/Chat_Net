@@ -37,8 +37,9 @@ public class SendT extends Thread{
 			Scanner sc = new Scanner(System.in);
 	        System.out.printf("사용자 이름 입력: ");
 	        username = sc.next();
-			
+	        System.out.printf(username+"님이 입장(IP주소"+m_Socket.getLocalAddress()+" "+m_Socket.getInetAddress()+")\n");
 	        System.out.println("질문지를 보내려면 'questionMode' 입력");
+	        
 			while(true)
 			{
 				sendString = tmpbuf.readLine();
